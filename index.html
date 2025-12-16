@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+Thank you for your patience, your next survey is loading…
+
+<script>
+const email = new URLSearchParams(window.location.search).get("email");
+
+if (!email) {
+  document.body.innerText = "Missing email.";
+  throw new Error("Missing email");
+}
+
+fetch("PASTE-NEW-POWER-AUTOMATE-HTTP-TRIGGER-URL-HERE", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email })
+})
+.then(res => res.json())
+.then(data => {
+  if (!data.redirectUrl) {
+    document.body.innerText = "Thank you for your time, no more pending surveys.";
+    return;
+  }
+  window.location.href = data.redirectUrl;
+})
+.catch(() => {
+  document.body.innerText = "Error connecting to system.";
+});
+</script>
+
+</body>
+</html>
